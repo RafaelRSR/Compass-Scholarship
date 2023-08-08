@@ -1,7 +1,8 @@
-package rafael.rocha.compasschallenge.entity;
+package rafael.rocha.compasschallenge.dtos;
 
 import jakarta.persistence.*;
 import lombok.*;
+import rafael.rocha.compasschallenge.entity.*;
 import rafael.rocha.compasschallenge.enums.ClassStatus;
 
 import java.util.List;
@@ -12,8 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
-public class Class {
+public class ClassDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,15 +22,11 @@ public class Class {
 
     @Enumerated(EnumType.STRING)
     public ClassStatus status;
-
-    public String name;
+    private String name;
     public List<Student> studentList;
-
     public Coordinator coordinatorAssigned;
     public List<Instructor> instructorsAssigned;
-
     public ScrumMaster scrumMasterAssigned;
 
     public List<Squad> squadList;
-
 }

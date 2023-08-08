@@ -8,20 +8,19 @@ import lombok.*;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class Student {
+public class ScrumMaster {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_student")
-    private long id;
+    @Column(name = "id_scrummaster")
+    private Long id;
 
     private String firstName;
     private String lastName;
+
     private String email;
-
-
 }
