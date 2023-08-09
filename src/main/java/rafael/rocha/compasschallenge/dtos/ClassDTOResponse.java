@@ -17,7 +17,6 @@ public class ClassDTOResponse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_classe")
     private Long id;
 
     @Enumerated(EnumType.STRING)

@@ -1,9 +1,12 @@
 package rafael.rocha.compasschallenge.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rafael.rocha.compasschallenge.dtos.ClassDTOResponse;
+import rafael.rocha.compasschallenge.entity.Class;
+import rafael.rocha.compasschallenge.exceptions.ClassroomNotFoundException;
 import rafael.rocha.compasschallenge.service.ClassService;
 
 @RestController
@@ -25,4 +28,19 @@ public class ClassController {
         return ResponseEntity.ok("Class created!");
     }
 
+    @PutMapping("/{classId}/finishClass")
+    public ResponseEntity<Object> finishClass(@PathVariable Long classId) {
+        try {
+            Class updatedClass = classService.finishClass(classId);
+            if (updatedClass != null) {
+                return ResponseEntity.ok(updatedClass);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (ClassroomNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 }

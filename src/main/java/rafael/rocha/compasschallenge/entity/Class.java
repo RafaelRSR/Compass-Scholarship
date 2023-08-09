@@ -25,7 +25,7 @@ public class Class {
     public ClassStatus status;
 
     @OneToMany
-    @Column(name = "student_list")
+    @Column(name = "student")
     public List<Student> studentList;
 
     @ManyToOne

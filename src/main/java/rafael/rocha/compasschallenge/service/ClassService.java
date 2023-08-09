@@ -9,15 +9,18 @@ import rafael.rocha.compasschallenge.entity.Coordinator;
 import rafael.rocha.compasschallenge.entity.Instructor;
 import rafael.rocha.compasschallenge.entity.ScrumMaster;
 import rafael.rocha.compasschallenge.enums.ClassStatus;
+import rafael.rocha.compasschallenge.exceptions.ClassroomNotFoundException;
 import rafael.rocha.compasschallenge.repository.ClassRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClassService {
 
     @Autowired
     private ClassRepository classRepository;
+
 
     public Class findById(Long id) {
         return classRepository.findById(id)
@@ -64,7 +67,7 @@ public class ClassService {
         return classDTOResponse;
     }
 
-    public void createClass(ClassDTORequest classDTORequest) {
+    public void createClass(ClassDTOResponse classDTORequest) {
         Class classEntity = new Class();
         classEntity.setStatus(classDTORequest.getStatus());
         classEntity.setStudentList(classDTORequest.getStudentList());
@@ -74,5 +77,21 @@ public class ClassService {
         classEntity.setSquadList(classDTORequest.getSquadList());
 
         classRepository.save(classEntity);
+    }
+
+    public Class finishClass(Long classId) {
+        Optional<Class> optionalClass = classRepository.findById(classId);
+        if (((Optional<?>) optionalClass).isPresent()) {
+            Class classToFinish = optionalClass.get();
+
+            if (classToFinish.getStatus() == ClassStatus.STARTED) {
+                classToFinish.setStatus(ClassStatus.FINISHED);
+                return classRepository.save(classToFinish);
+            } else {
+                throw new IllegalStateException("Class is not in the 'started' status.");
+            }
+        } else {
+            throw new ClassroomNotFoundException("Class not found with ID: " + classId);
+        }
     }
 }
