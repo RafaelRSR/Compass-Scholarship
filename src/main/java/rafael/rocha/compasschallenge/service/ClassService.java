@@ -1,5 +1,6 @@
 package rafael.rocha.compasschallenge.service;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rafael.rocha.compasschallenge.dtos.ClassDTORequest;
@@ -20,6 +21,9 @@ public class ClassService {
 
     @Autowired
     private ClassRepository classRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     public Class findById(Long id) {
@@ -53,29 +57,15 @@ public class ClassService {
         }
     }
 
+
     public ClassDTOResponse getClassMembers(Long classId) {
         Class classEntity = classRepository.findById(classId)
                 .orElseThrow(() -> new IllegalArgumentException("Couldn't find class"));
-
-        ClassDTOResponse classDTOResponse = new ClassDTOResponse();
-        classDTOResponse.setId(classEntity.getId());
-        classDTOResponse.setStudentList(classEntity.getStudentList());
-        classDTOResponse.setCoordinatorAssigned(classEntity.getCoordinatorAssigned());
-        classDTOResponse.setInstructorsAssigned(classEntity.getInstructorsAssigned());
-        classDTOResponse.setScrumMasterAssigned(classEntity.getScrumMasterAssigned());
-
-        return classDTOResponse;
+        return modelMapper.map(classEntity, ClassDTOResponse.class);
     }
 
     public void createClass(ClassDTOResponse classDTORequest) {
-        Class classEntity = new Class();
-        classEntity.setStatus(classDTORequest.getStatus());
-        classEntity.setStudentList(classDTORequest.getStudentList());
-        classEntity.setCoordinatorAssigned(classDTORequest.getCoordinatorAssigned());
-        classEntity.setScrumMasterAssigned(classDTORequest.getScrumMasterAssigned());
-        classEntity.setInstructorsAssigned(classDTORequest.getInstructorsAssigned());
-        classEntity.setSquadList(classDTORequest.getSquadList());
-
+        Class classEntity = modelMapper.map(classDTORequest, Class.class);
         classRepository.save(classEntity);
     }
 
@@ -83,7 +73,6 @@ public class ClassService {
         Optional<Class> optionalClass = classRepository.findById(classId);
         if (((Optional<?>) optionalClass).isPresent()) {
             Class classToFinish = optionalClass.get();
-
             if (classToFinish.getStatus() == ClassStatus.STARTED) {
                 classToFinish.setStatus(ClassStatus.FINISHED);
                 return classRepository.save(classToFinish);
