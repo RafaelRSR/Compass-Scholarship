@@ -2,7 +2,8 @@ package rafael.rocha.compasschallenge.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rafael.rocha.compasschallenge.dtos.ClassDTO;
+import rafael.rocha.compasschallenge.dtos.ClassDTORequest;
+import rafael.rocha.compasschallenge.dtos.ClassDTOResponse;
 import rafael.rocha.compasschallenge.entity.Class;
 import rafael.rocha.compasschallenge.entity.Coordinator;
 import rafael.rocha.compasschallenge.entity.Instructor;
@@ -23,48 +24,55 @@ public class ClassService {
                 .orElseThrow(() -> new IllegalArgumentException("Class not found"));
     }
 
-    public void startClass(ClassDTO classDTO) {
-        validateClassSize(classDTO);
-        validateClassStaff(classDTO);
-        classDTO.setStatus(ClassStatus.STARTED);
+    public void startClass(ClassDTORequest classDTORequest) {
+        validateClassSize(classDTORequest);
+        validateClassStaff(classDTORequest);
+        Class classEntity = new Class();
+        classEntity.setStatus(ClassStatus.STARTED);
         System.out.println("Class STARTED!");
     }
 
-    public void validateClassSize(ClassDTO classDTO) {
-        int currentSize = classDTO.getStudentList().size();
+    public void validateClassSize(ClassDTORequest classDTORequest) {
+        int currentSize = classDTORequest.getStudentList().size();
 
         if (!(currentSize >= 15 && currentSize < 30)) {
             throw new IllegalArgumentException("Class size not accepted");
         }
     }
 
-    public void validateClassStaff(ClassDTO classDTO) {
-        Coordinator coordinatorAssigned = classDTO.getCoordinatorAssigned();
-        ScrumMaster scrumMasterAssigned = classDTO.getScrumMasterAssigned();
-        List<Instructor> instructorsAssigned = classDTO.getInstructorsAssigned();
+    public void validateClassStaff(ClassDTORequest classDTORequest) {
+        Coordinator coordinatorAssigned = classDTORequest.getCoordinatorAssigned();
+        ScrumMaster scrumMasterAssigned = classDTORequest.getScrumMasterAssigned();
+        List<Instructor> instructorsAssigned = classDTORequest.getInstructorsAssigned();
 
         if (coordinatorAssigned == null || scrumMasterAssigned == null || instructorsAssigned.size() < 3) {
             throw new IllegalArgumentException("Staff size not enough!");
         }
     }
 
-    public ClassDTO getClassMembers(Long classId) {
+    public ClassDTOResponse getClassMembers(Long classId) {
         Class classEntity = classRepository.findById(classId)
                 .orElseThrow(() -> new IllegalArgumentException("Couldn't find class"));
 
-        ClassDTO classDTO = new ClassDTO();
-        classDTO.setId(classEntity.getId());
-        classDTO.setStudentList(classEntity.getStudentList());
-        classDTO.setCoordinatorAssigned(classEntity.getCoordinatorAssigned());
-        classDTO.setInstructorsAssigned(classEntity.getInstructorsAssigned());
-        classDTO.setScrumMasterAssigned(classEntity.getScrumMasterAssigned());
+        ClassDTOResponse classDTOResponse = new ClassDTOResponse();
+        classDTOResponse.setId(classEntity.getId());
+        classDTOResponse.setStudentList(classEntity.getStudentList());
+        classDTOResponse.setCoordinatorAssigned(classEntity.getCoordinatorAssigned());
+        classDTOResponse.setInstructorsAssigned(classEntity.getInstructorsAssigned());
+        classDTOResponse.setScrumMasterAssigned(classEntity.getScrumMasterAssigned());
 
-        return classDTO;
+        return classDTOResponse;
     }
 
-    public void createClass(ClassDTO classDTO) {
-
+    public void createClass(ClassDTORequest classDTORequest) {
         Class classEntity = new Class();
+        classEntity.setStatus(classDTORequest.getStatus());
+        classEntity.setStudentList(classDTORequest.getStudentList());
+        classEntity.setCoordinatorAssigned(classDTORequest.getCoordinatorAssigned());
+        classEntity.setScrumMasterAssigned(classDTORequest.getScrumMasterAssigned());
+        classEntity.setInstructorsAssigned(classDTORequest.getInstructorsAssigned());
+        classEntity.setSquadList(classDTORequest.getSquadList());
+
         classRepository.save(classEntity);
     }
 }

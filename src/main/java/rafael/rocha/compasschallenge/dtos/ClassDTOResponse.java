@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ClassDTO {
+public class ClassDTOResponse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
