@@ -22,7 +22,6 @@ public class ClassDTO {
 
     @Enumerated(EnumType.STRING)
     public ClassStatus status;
-    private String name;
     public List<Student> studentList;
     public Coordinator coordinatorAssigned;
     public List<Instructor> instructorsAssigned;

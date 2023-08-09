@@ -17,20 +17,32 @@ public class Class {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_classe")
+    @Column(name = "class_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     public ClassStatus status;
 
-    public String name;
+    @OneToMany
+    @Column(name = "student_list")
     public List<Student> studentList;
 
+    @ManyToOne
+    @JoinColumn(name = "coordinator_id")
     public Coordinator coordinatorAssigned;
+    @ManyToMany
+    @JoinTable(name = "class_instructor",
+            joinColumns = @JoinColumn(name = "class_id"),
+            inverseJoinColumns = @JoinColumn(name = "instructor_id")
+    )
     public List<Instructor> instructorsAssigned;
 
+    @ManyToOne
+    @JoinColumn(name = "scrum_master_id")
     public ScrumMaster scrumMasterAssigned;
 
+    @OneToMany
     public List<Squad> squadList;
 
 }

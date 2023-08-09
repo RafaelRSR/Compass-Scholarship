@@ -54,12 +54,17 @@ public class ClassService {
 
         ClassDTO classDTO = new ClassDTO();
         classDTO.setId(classEntity.getId());
-        classDTO.setName(classEntity.getName());
         classDTO.setStudentList(classEntity.getStudentList());
         classDTO.setCoordinatorAssigned(classEntity.getCoordinatorAssigned());
         classDTO.setInstructorsAssigned(classEntity.getInstructorsAssigned());
         classDTO.setScrumMasterAssigned(classEntity.getScrumMasterAssigned());
 
         return classDTO;
+    }
+
+    public void createClass(ClassDTO classDTO) {
+
+        Class classEntity = new Class();
+        classRepository.save(classEntity);
     }
 }

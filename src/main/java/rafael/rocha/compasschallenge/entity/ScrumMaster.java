@@ -1,9 +1,6 @@
 package rafael.rocha.compasschallenge.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Data
@@ -12,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@Entity
 public class ScrumMaster {
 
     @Id
@@ -19,8 +17,16 @@ public class ScrumMaster {
     @Column(name = "id_scrummaster")
     private Long id;
 
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "email")
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "class_assigned")
+    private Class classAssigned;
 }
