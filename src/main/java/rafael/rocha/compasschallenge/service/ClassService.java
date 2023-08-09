@@ -1,14 +1,14 @@
 package rafael.rocha.compasschallenge.service;
 
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rafael.rocha.compasschallenge.dtos.ClassDTORequest;
 import rafael.rocha.compasschallenge.dtos.ClassDTOResponse;
+import rafael.rocha.compasschallenge.dtos.StudentDTORequest;
+import rafael.rocha.compasschallenge.entity.*;
 import rafael.rocha.compasschallenge.entity.Class;
-import rafael.rocha.compasschallenge.entity.Coordinator;
-import rafael.rocha.compasschallenge.entity.Instructor;
-import rafael.rocha.compasschallenge.entity.ScrumMaster;
 import rafael.rocha.compasschallenge.enums.ClassStatus;
 import rafael.rocha.compasschallenge.exceptions.ClassroomNotFoundException;
 import rafael.rocha.compasschallenge.repository.ClassRepository;
@@ -82,5 +82,16 @@ public class ClassService {
         } else {
             throw new ClassroomNotFoundException("Class not found with ID: " + classId);
         }
+    }
+
+    @Transactional
+    public void addStudentToClass(Long classId, StudentDTORequest studentDTORequest) {
+        Class classEntity = classRepository.findById(classId)
+                .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
+
+        Student newStudent = modelMapper.map(studentDTORequest, Student.class);
+
+        classEntity.getStudentList().add(newStudent);
+        classRepository.save(classEntity);
     }
 }

@@ -28,4 +28,7 @@ public class Squad {
     @OneToMany
     @Column(name = "student_list")
     private List<Student> studentList;
+
+    @ManyToOne
+    private Class classAssigned;
 }
