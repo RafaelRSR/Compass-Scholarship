@@ -90,6 +90,7 @@ public class ClassService {
                 .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
 
         Student newStudent = modelMapper.map(studentDTORequest, Student.class);
+        newStudent.setClassAssigned(classEntity);
 
         classEntity.getStudentList().add(newStudent);
         classRepository.save(classEntity);

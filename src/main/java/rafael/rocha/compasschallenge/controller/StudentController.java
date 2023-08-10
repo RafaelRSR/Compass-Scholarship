@@ -8,11 +8,15 @@ import rafael.rocha.compasschallenge.dtos.StudentDTORequest;
 import rafael.rocha.compasschallenge.dtos.StudentDTOResponse;
 import rafael.rocha.compasschallenge.entity.Student;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
+import rafael.rocha.compasschallenge.repository.StudentRepository;
 import rafael.rocha.compasschallenge.service.StudentService;
 
 @RestController
 @RequestMapping("/v2/students")
 public class StudentController {
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     @Autowired
     private StudentService studentService;
@@ -31,5 +35,15 @@ public class StudentController {
     public ResponseEntity<StudentDTOResponse> createStudent(@RequestBody StudentDTORequest studentDTORequest) {
         StudentDTOResponse newStudent = studentService.createStudent(studentDTORequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(newStudent);
+    }
+
+    @PutMapping("/put/{studentId}")
+    public ResponseEntity<Object> updateStudent(@PathVariable Long studentId, @RequestBody StudentDTORequest studentDTORequest) {
+        try {
+            Student updatedStudent = studentService.updateStudent(studentId,studentDTORequest);
+            return ResponseEntity.ok(updatedStudent);
+        } catch (StudentNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

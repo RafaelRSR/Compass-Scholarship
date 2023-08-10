@@ -47,4 +47,12 @@ public class StudentService {
         studentList.removeIf(student -> student.getId().equals(studentId));
         classRepository.save(classEntity);
     }
+
+    public Student updateStudent(Long studentId, StudentDTORequest studentDTORequest) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException("Couldn't find a student with id: " + studentId));
+
+        modelMapper.map(studentDTORequest, student);
+        return studentRepository.save(student);
+    }
 }
