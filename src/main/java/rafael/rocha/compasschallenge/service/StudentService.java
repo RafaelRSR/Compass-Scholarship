@@ -39,7 +39,7 @@ public class StudentService {
                 .orElseThrow(() -> new StudentNotFoundException("Student not found!"));
     }
 
-    public void deleteStudentById(Long classId, Long studentId) {
+    public void deleteStudentFromClass(Long classId, Long studentId) {
         Class classEntity = classRepository.findById(classId)
                 .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
 
@@ -55,4 +55,12 @@ public class StudentService {
         modelMapper.map(studentDTORequest, student);
         return studentRepository.save(student);
     }
+
+    public void deleteStudentFromStudents(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException("Couldn't find a student with id: " + studentId));
+
+        studentRepository.delete(student);
+    }
 }
+

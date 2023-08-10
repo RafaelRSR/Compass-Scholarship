@@ -40,10 +40,16 @@ public class StudentController {
     @PutMapping("/put/{studentId}")
     public ResponseEntity<Object> updateStudent(@PathVariable Long studentId, @RequestBody StudentDTORequest studentDTORequest) {
         try {
-            Student updatedStudent = studentService.updateStudent(studentId,studentDTORequest);
+            Student updatedStudent = studentService.updateStudent(studentId, studentDTORequest);
             return ResponseEntity.ok(updatedStudent);
         } catch (StudentNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @DeleteMapping("/delete/{studentId}")
+    public ResponseEntity<Void> deleteStudent(@PathVariable Long studentId) {
+        studentService.deleteStudentFromStudents(studentId);
+        return ResponseEntity.noContent().build();
     }
 }
