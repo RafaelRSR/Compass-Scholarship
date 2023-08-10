@@ -39,15 +39,6 @@ public class StudentService {
                 .orElseThrow(() -> new StudentNotFoundException("Student not found!"));
     }
 
-    public void deleteStudentFromClass(Long classId, Long studentId) {
-        Class classEntity = classRepository.findById(classId)
-                .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
-
-        List<Student> studentList = classEntity.getStudentList();
-        studentList.removeIf(student -> student.getId().equals(studentId));
-        classRepository.save(classEntity);
-    }
-
     public Student updateStudent(Long studentId, StudentDTORequest studentDTORequest) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException("Couldn't find a student with id: " + studentId));

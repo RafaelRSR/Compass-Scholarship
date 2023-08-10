@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rafael.rocha.compasschallenge.dtos.ClassDTOResponse;
+import rafael.rocha.compasschallenge.dtos.StudentDTORequest;
 import rafael.rocha.compasschallenge.entity.Class;
 import rafael.rocha.compasschallenge.exceptions.ClassroomNotFoundException;
 import rafael.rocha.compasschallenge.service.ClassService;
@@ -42,5 +43,11 @@ public class ClassController {
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+
+    @PostMapping("{classId}/students")
+    public ResponseEntity<Void> addStudentToClass(@PathVariable Long classId, @RequestBody StudentDTORequest studentDTORequest) {
+        classService.addStudentToClass(classId, studentDTORequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

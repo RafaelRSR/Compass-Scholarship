@@ -95,4 +95,13 @@ public class ClassService {
         classEntity.getStudentList().add(newStudent);
         classRepository.save(classEntity);
     }
+
+    public void deleteStudentFromClass(Long classId, Long studentId) {
+        Class classEntity = classRepository.findById(classId)
+                .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
+
+        List<Student> studentList = classEntity.getStudentList();
+        studentList.removeIf(student -> student.getId().equals(studentId));
+        classRepository.save(classEntity);
+    }
 }
