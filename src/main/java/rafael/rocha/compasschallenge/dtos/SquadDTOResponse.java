@@ -1,11 +1,15 @@
-package rafael.rocha.compasschallenge.entity;
+package rafael.rocha.compasschallenge.dtos;
 
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Max;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import rafael.rocha.compasschallenge.entity.Class;
+import rafael.rocha.compasschallenge.entity.Student;
 
 import java.util.List;
 
@@ -13,22 +17,16 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Squad {
+public class SquadDTOResponse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_squad")
     private Long id;
 
-    @Column(name = "name_squad")
     private String name;
 
-    @OneToMany
-    @JoinColumn(name = "student_list")
     @Max(5)
     private List<Student> studentList;
 
-    @ManyToOne
     private Class classAssigned;
 }
