@@ -50,4 +50,10 @@ public class ClassController {
         classService.addStudentToClass(classId, studentDTORequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @DeleteMapping("{classId}/students/{studentId}")
+    public ResponseEntity<Void> deleteStudentFromClass(@PathVariable Long classId, @PathVariable Long studentId) {
+        classService.deleteStudentFromClass(classId, studentId);
+        return ResponseEntity.noContent().build();
+    }
 }
