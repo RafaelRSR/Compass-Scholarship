@@ -4,15 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import rafael.rocha.compasschallenge.dtos.ClassDTORequest;
 import rafael.rocha.compasschallenge.dtos.ClassDTOResponse;
 import rafael.rocha.compasschallenge.dtos.StudentDTORequest;
 import rafael.rocha.compasschallenge.entity.Class;
 import rafael.rocha.compasschallenge.exceptions.ClassroomNotFoundException;
 import rafael.rocha.compasschallenge.service.ClassService;
+import rafael.rocha.compasschallenge.repository.ClassRepository;
 
 @RestController
 @RequestMapping(value = "/v1/classes")
 public class ClassController {
+
+    @Autowired
+    private ClassRepository classRepository;
 
     @Autowired
     private ClassService classService;
@@ -27,6 +32,16 @@ public class ClassController {
     public ResponseEntity<String> createClass(@RequestBody ClassDTOResponse classDTO) {
         classService.createClass(classDTO);
         return ResponseEntity.ok("Class created!");
+    }
+
+    @PutMapping("/{classId}/startClass")
+    public ResponseEntity<Void> startClass(@PathVariable Long classId) {
+        Class classToStart = classRepository.findById(classId)
+                        .orElseThrow(() -> new ClassroomNotFoundException("Class not found!"));
+        classService.validateClassSize(classToStart);
+        classService.validateClassStaff(classToStart);
+        classService.startClass(classId);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{classId}/finishClass")

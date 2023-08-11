@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rafael.rocha.compasschallenge.dtos.ClassDTORequest;
 import rafael.rocha.compasschallenge.dtos.ClassDTOResponse;
 import rafael.rocha.compasschallenge.dtos.StudentDTORequest;
 import rafael.rocha.compasschallenge.entity.*;
@@ -31,15 +30,14 @@ public class ClassService {
                 .orElseThrow(() -> new IllegalArgumentException("Class not found"));
     }
 
-    public void startClass(ClassDTORequest classDTORequest) {
-        validateClassSize(classDTORequest);
-        validateClassStaff(classDTORequest);
-        Class classEntity = new Class();
+    public void startClass(Long classId) {
+        Class classEntity = classRepository.findById(classId)
+                        .orElseThrow(() -> new ClassroomNotFoundException("Classroom not found!"));
         classEntity.setStatus(ClassStatus.STARTED);
         System.out.println("Class STARTED!");
     }
 
-    public void validateClassSize(ClassDTORequest classDTORequest) {
+    public void validateClassSize(Class classDTORequest) {
         int currentSize = classDTORequest.getStudentList().size();
 
         if (!(currentSize >= 15 && currentSize < 30)) {
@@ -47,7 +45,7 @@ public class ClassService {
         }
     }
 
-    public void validateClassStaff(ClassDTORequest classDTORequest) {
+    public void validateClassStaff(Class classDTORequest) {
         Coordinator coordinatorAssigned = classDTORequest.getCoordinatorAssigned();
         ScrumMaster scrumMasterAssigned = classDTORequest.getScrumMasterAssigned();
         List<Instructor> instructorsAssigned = classDTORequest.getInstructorsAssigned();
