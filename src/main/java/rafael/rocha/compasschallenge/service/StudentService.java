@@ -1,6 +1,7 @@
 package rafael.rocha.compasschallenge.service;
 
 
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import rafael.rocha.compasschallenge.entity.Student;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.repository.StudentRepository;
 
+import java.util.List;
 
 
 @Service
@@ -46,6 +48,11 @@ public class StudentService {
                 .orElseThrow(() -> new StudentNotFoundException("Couldn't find a student with id: " + studentId));
 
         studentRepository.delete(student);
+    }
+
+    @Transactional
+    public List<Student> getStudentsByIds(List<Long> studentIds) {
+        return studentRepository.findByStudentsId(studentIds);
     }
 }
 
