@@ -43,13 +43,6 @@ public class SquadController {
         return ResponseEntity.status(HttpStatus.CREATED).body(squadDTOResponse);
     }
 
-    @PostMapping
-    public ResponseEntity<Void> addStudentsToSquad(@PathVariable Long squadId, @RequestBody List<Long> studentIds) {
-        List<Student> students = studentService.getStudentsByIds(studentIds);
-        squadService.addStudentsToSquad(squadId, students);
-        return ResponseEntity.ok().build();
-    }
-
     @DeleteMapping("/{squadId}")
     public ResponseEntity<Void> deleteSquad(@PathVariable Long squadId) {
         squadService.deleteSquad(squadId);

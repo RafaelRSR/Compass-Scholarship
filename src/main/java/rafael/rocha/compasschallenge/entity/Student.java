@@ -7,8 +7,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Entity
 public class Student {
 
@@ -26,8 +24,8 @@ public class Student {
     @Column(name = "email")
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "class")
-    private Class classAssigned;
+
+    @Column(name = "class_assigned_id")
+    private Long classAssigned;
 
 }

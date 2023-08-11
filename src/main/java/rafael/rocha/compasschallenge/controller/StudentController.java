@@ -12,7 +12,7 @@ import rafael.rocha.compasschallenge.repository.StudentRepository;
 import rafael.rocha.compasschallenge.service.StudentService;
 
 @RestController
-@RequestMapping("/v2/students")
+@RequestMapping("/v1/students")
 public class StudentController {
 
     @Autowired
@@ -48,8 +48,8 @@ public class StudentController {
     }
 
     @DeleteMapping("/delete/{studentId}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long studentId) {
+    public ResponseEntity<String> deleteStudent(@PathVariable Long studentId) {
         studentService.deleteStudentFromStudents(studentId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Deleted student with id: " + studentId);
     }
 }

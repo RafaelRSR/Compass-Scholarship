@@ -10,8 +10,6 @@ import rafael.rocha.compasschallenge.entity.Class;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class StudentDTOResponse {
 
     @Id
@@ -21,5 +19,5 @@ public class StudentDTOResponse {
     private String lastName;
     private String email;
 
-    private Class classAssigned;
+    private Long classAssigned;
 }

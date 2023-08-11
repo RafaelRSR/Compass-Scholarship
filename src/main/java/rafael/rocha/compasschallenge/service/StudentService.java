@@ -49,10 +49,5 @@ public class StudentService {
 
         studentRepository.delete(student);
     }
-
-    @Transactional
-    public List<Student> getStudentsByIds(List<Long> studentIds) {
-        return studentRepository.findByStudentsId(studentIds);
-    }
 }
 
