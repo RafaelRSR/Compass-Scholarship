@@ -24,7 +24,6 @@ public class ScrumMaster {
     @Column(name = "email")
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "class_assigned")
-    private Class classAssigned;
+    @Column(name = "class_assigned_id")
+    private Long classAssigned;
 }

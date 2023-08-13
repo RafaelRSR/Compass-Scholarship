@@ -11,7 +11,11 @@ import rafael.rocha.compasschallenge.entity.*;
 import rafael.rocha.compasschallenge.entity.Class;
 import rafael.rocha.compasschallenge.enums.ClassStatus;
 import rafael.rocha.compasschallenge.exceptions.ClassroomNotFoundException;
+import rafael.rocha.compasschallenge.exceptions.CoordinatorNotFoundException;
+import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.repository.ClassRepository;
+import rafael.rocha.compasschallenge.repository.CoordinatorRepository;
+import rafael.rocha.compasschallenge.repository.StudentRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +29,11 @@ public class ClassService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private CoordinatorRepository coordinatorRepository;
 
     public Class findById(Long id) {
         return classRepository.findById(id)
@@ -85,22 +94,46 @@ public class ClassService {
     }
 
     @Transactional
-    public void addStudentToClass(Long classId, StudentDTORequest studentDTORequest) {
+    public void addStudentToClass(Long classId, Long studentId) {
         Class classEntity = classRepository.findById(classId)
                 .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
 
-        Student newStudent = modelMapper.map(studentDTORequest, Student.class);
-        newStudent.setClassAssigned(classEntity.getId());
+        Student newStudent = studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException("Couldn't find student with id:" + studentId));
+
+        newStudent.setClassAssigned(classId);
         classEntity.getStudentList().add(newStudent);
         classRepository.save(classEntity);
     }
 
+    @Transactional
     public void deleteStudentFromClass(Long classId, Long studentId) {
         Class classEntity = classRepository.findById(classId)
                 .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
 
         List<Student> studentList = classEntity.getStudentList();
         studentList.removeIf(student -> student.getId().equals(studentId));
+        classRepository.save(classEntity);
+    }
+
+    @Transactional
+    public void addCoordinatorToClass(Long classId, Long coordinatorId) {
+        Class classEntity = classRepository.findById(classId)
+                .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
+
+        Coordinator coordinator = coordinatorRepository.findById(coordinatorId)
+                    .orElseThrow(() -> new CoordinatorNotFoundException("Coordinator not found with id: " + coordinatorId));
+
+        coordinator.setClassAssigned(classId);
+        classRepository.save(classEntity);
+    }
+
+    @Transactional
+    public void deleteCoordinatorFromClass(Long classId, Long coordinatorId) {
+        Class classEntity = classRepository.findById(classId)
+                .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
+
+        classEntity.setCoordinatorAssigned(null);
         classRepository.save(classEntity);
     }
 }

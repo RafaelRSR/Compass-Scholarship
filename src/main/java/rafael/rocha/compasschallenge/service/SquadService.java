@@ -44,11 +44,20 @@ public class SquadService {
     }
 
     @Transactional
-    public void addStudentsToSquad(Long squadId, List<Student> students) {
+    public void addStudentsToSquad(Long squadId, Student student) {
         Squad squadEntity = squadRepository.findById(squadId)
                 .orElseThrow(() -> new SquadNotFoundException("Squad not found with the id: " + squadId));
 
-        squadEntity.getStudentList().addAll(students);
+        squadEntity.getStudentList().add(student);
+        squadRepository.save(squadEntity);
+    }
+
+    @Transactional
+    public void deleteStudentFromSquad(Long squadId, Long studentId) {
+        Squad squadEntity = squadRepository.findById(squadId)
+                .orElseThrow(() -> new SquadNotFoundException("Squad not found with id: " + squadId));
+
+        squadEntity.getStudentList().removeIf(student -> student.getId().equals(studentId));
         squadRepository.save(squadEntity);
     }
 }

@@ -7,8 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rafael.rocha.compasschallenge.dtos.SquadDTORequest;
 import rafael.rocha.compasschallenge.dtos.SquadDTOResponse;
+import rafael.rocha.compasschallenge.dtos.StudentDTORequest;
 import rafael.rocha.compasschallenge.entity.Squad;
 import rafael.rocha.compasschallenge.entity.Student;
+import rafael.rocha.compasschallenge.exceptions.SquadNotFoundException;
+import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.service.SquadService;
 import rafael.rocha.compasschallenge.service.StudentService;
 
@@ -43,9 +46,28 @@ public class SquadController {
         return ResponseEntity.status(HttpStatus.CREATED).body(squadDTOResponse);
     }
 
+    @PostMapping("/{squadId}/students")
+    public ResponseEntity<String> addStudentToSquad(@PathVariable Long squadId, @RequestBody StudentDTORequest studentDTORequest) {
+        Student student = modelMapper.map(studentDTORequest, Student.class);
+        squadService.addStudentsToSquad(squadId, student);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Added student to squad successfully!");
+    }
+
     @DeleteMapping("/{squadId}")
-    public ResponseEntity<Void> deleteSquad(@PathVariable Long squadId) {
+    public ResponseEntity<String> deleteSquad(@PathVariable Long squadId) {
         squadService.deleteSquad(squadId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Squad deleted!");
+    }
+
+    @DeleteMapping("/{squadId}/students/{studentId}")
+    public ResponseEntity<String> deleteStudentFromSquad(@PathVariable Long squadId, @PathVariable Long studentId) {
+        try {
+            squadService.deleteStudentFromSquad(squadId, studentId);
+            return ResponseEntity.ok("Deleted student with id: " + studentId + "from squad " + squadId);
+        } catch (SquadNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Squad not found!");
+        } catch (StudentNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found!");
+        }
     }
 }
