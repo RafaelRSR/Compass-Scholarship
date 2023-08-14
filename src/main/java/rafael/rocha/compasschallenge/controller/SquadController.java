@@ -25,8 +25,6 @@ public class SquadController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private StudentService studentService;
 
     @GetMapping("/{squadId}")
     public ResponseEntity<SquadDTOResponse> findSquadById(@PathVariable Long squadId) {

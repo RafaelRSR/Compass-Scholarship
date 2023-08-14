@@ -28,11 +28,11 @@ public class InstructorService {
                 .orElseThrow(() -> new InstructorNotFoundException("Instructor not found with id: " + instructorId));
     }
 
-    public InstructorDTOResponse createInstructor(InstructorDTORequest instructorDTORequest) {
+    public void createInstructor(InstructorDTORequest instructorDTORequest) {
         Instructor instructor = modelMapper.map(instructorDTORequest, Instructor.class);
         Instructor newInstructor = instructorRepository.save(instructor);
 
-        return modelMapper.map(newInstructor, InstructorDTOResponse.class);
+        modelMapper.map(newInstructor, InstructorDTOResponse.class);
     }
 
     public Instructor updateInstructor(Long instructorId, InstructorDTORequest instructorDTORequest) {
