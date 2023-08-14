@@ -8,15 +8,11 @@ import rafael.rocha.compasschallenge.dtos.student.StudentDTORequest;
 import rafael.rocha.compasschallenge.dtos.student.StudentDTOResponse;
 import rafael.rocha.compasschallenge.entity.Student;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
-import rafael.rocha.compasschallenge.repository.StudentRepository;
 import rafael.rocha.compasschallenge.service.StudentService;
 
 @RestController
 @RequestMapping("/v1/students")
 public class StudentController {
-
-    @Autowired
-    private StudentRepository studentRepository;
 
     @Autowired
     private StudentService studentService;

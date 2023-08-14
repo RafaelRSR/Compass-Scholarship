@@ -23,9 +23,6 @@ public class SquadDTOResponse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    @Max(5)
     private List<Student> studentList;
 
     private Class classAssigned;

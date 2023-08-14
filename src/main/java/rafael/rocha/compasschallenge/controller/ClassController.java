@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import rafael.rocha.compasschallenge.dtos.classroom.ClassDTOResponse;
 import rafael.rocha.compasschallenge.dtos.squad.SquadDTORequest;
 import rafael.rocha.compasschallenge.entity.Class;
+import rafael.rocha.compasschallenge.entity.Student;
 import rafael.rocha.compasschallenge.exceptions.ClassroomNotFoundException;
-import rafael.rocha.compasschallenge.exceptions.SquadNotFoundException;
+import rafael.rocha.compasschallenge.exceptions.MaxStudentsException;
 import rafael.rocha.compasschallenge.service.ClassService;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ClassController {
 
     @Autowired
     private ClassService classService;
+
 
     @GetMapping
     public ResponseEntity<List<Class>> getAllClasses(){
@@ -118,5 +120,26 @@ public class ClassController {
     public ResponseEntity<String> deleteScrumMasterFromClass(@PathVariable Long classId) {
         classService.deleteScrumMasterFromClass(classId);
         return ResponseEntity.ok("Removed Scrum Master from class: " + classId);
+    }
+
+    @PostMapping("/{classId}/populateStaff")
+    public ResponseEntity<String> populateStaff(@PathVariable Long classId) {
+        classService.populateStaff(classId);
+        return ResponseEntity.ok("Staff populated for class: " + classId);
+    }
+
+    @PostMapping("/{classId}/populateStudents")
+    public ResponseEntity<String> populateStudents(@PathVariable Long classId) {
+        try {
+            classService.populateClassWithStudents(classId);
+            return ResponseEntity.ok("Students added to class: " + classId);
+        } catch (MaxStudentsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No more students to add!");
+        }
+    }
+    @PostMapping("/{classId}/addSquads")
+    public ResponseEntity<String> addSquadsToClassWithStudents(@PathVariable Long classId) {
+        classService.addSquadsToClassWithStudents(classId);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Squads added to class with students");
     }
 }

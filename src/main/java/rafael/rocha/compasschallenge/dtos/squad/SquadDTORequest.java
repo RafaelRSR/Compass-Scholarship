@@ -16,9 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 public class SquadDTORequest {
 
-    private String name;
-
-    @Max(5)
     private List<Student> studentList;
 
     private Class classAssigned;

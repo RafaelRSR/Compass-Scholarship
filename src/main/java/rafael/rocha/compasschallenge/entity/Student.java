@@ -26,8 +26,6 @@ public class Student {
     @Column(name = "email")
     private String email;
 
-
     @Column(name = "class_assigned_id")
     private Long classAssigned;
-
 }

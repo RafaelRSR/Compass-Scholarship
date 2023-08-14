@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,13 +22,9 @@ public class Squad {
     @Column(name = "id_squad")
     private Long id;
 
-    @Column(name = "name_squad")
-    private String name;
-
     @OneToMany
     @JoinColumn(name = "student_list")
-    @Max(5)
-    private List<Student> studentList;
+    private List<Student> studentList = new ArrayList<>();
 
     @Column(name = "class_assigned_id")
     private Long classAssigned;

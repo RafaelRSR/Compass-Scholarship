@@ -4,7 +4,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
-import rafael.rocha.compasschallenge.entity.Class;
 
 @Data
 @Builder
@@ -18,6 +17,6 @@ public class StudentDTOResponse {
     private String firstName;
     private String lastName;
     private String email;
-
     private Long classAssigned;
+    private Long squadAssigned;
 }

@@ -5,8 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rafael.rocha.compasschallenge.dtos.scrummaster.ScrumMasterDTORequest;
-import rafael.rocha.compasschallenge.dtos.scrummaster.ScrumMasterDTOResponse;
-import rafael.rocha.compasschallenge.entity.Instructor;
 import rafael.rocha.compasschallenge.entity.ScrumMaster;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.service.ScrumMasterService;

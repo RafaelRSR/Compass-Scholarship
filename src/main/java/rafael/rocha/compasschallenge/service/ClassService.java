@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rafael.rocha.compasschallenge.dtos.classroom.ClassDTOResponse;
 import rafael.rocha.compasschallenge.dtos.squad.SquadDTORequest;
-import rafael.rocha.compasschallenge.entity.*;
 import rafael.rocha.compasschallenge.entity.Class;
+import rafael.rocha.compasschallenge.entity.*;
 import rafael.rocha.compasschallenge.enums.ClassStatus;
 import rafael.rocha.compasschallenge.exceptions.*;
 import rafael.rocha.compasschallenge.repository.*;
@@ -41,10 +41,6 @@ public class ClassService {
     @Autowired
     private ScrumMasterRepository scrumMasterRepository;
 
-    public Class findById(Long classId) {
-        return classRepository.findById(classId)
-                .orElseThrow(() -> new ClassroomNotFoundException("Class not found with id: " + classId));
-    }
 
     public List<Class> getAllClasses() {
         return classRepository.findAll();
@@ -128,6 +124,7 @@ public class ClassService {
         studentList.removeIf(student -> student.getId().equals(studentId));
         classRepository.save(classEntity);
     }
+
     @Transactional
     public void addSquadToClass(Long classId, SquadDTORequest squadDTORequest) {
         Class classEntity = classRepository.findById(classId)
@@ -173,13 +170,14 @@ public class ClassService {
             squadRepository.save(squad);
         }
     }
+
     @Transactional
     public void addCoordinatorToClass(Long classId, Long coordinatorId) {
         Class classEntity = classRepository.findById(classId)
                 .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
 
         Coordinator coordinator = coordinatorRepository.findById(coordinatorId)
-                    .orElseThrow(() -> new CoordinatorNotFoundException("Coordinator not found with id: " + coordinatorId));
+                .orElseThrow(() -> new CoordinatorNotFoundException("Coordinator not found with id: " + coordinatorId));
 
         coordinator.setClassAssigned(classId);
         classEntity.setCoordinatorAssigned(coordinator);
@@ -244,4 +242,95 @@ public class ClassService {
         classEntity.setScrumMasterAssigned(null);
         classRepository.save(classEntity);
     }
+
+    @Transactional
+    public void populateStaff(Long classId) {
+        Class classEntity = classRepository.findById(classId)
+                .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
+
+        if (classEntity.getScrumMasterAssigned() == null) {
+            ScrumMaster availableScrumMaster = scrumMasterRepository.findOneScrumMaster();
+            if (availableScrumMaster != null) {
+                availableScrumMaster.setClassAssigned(classId);
+                classEntity.setScrumMasterAssigned(availableScrumMaster);
+            }
+        }
+
+        List<Instructor> availableInstructors = instructorRepository.findThreeInstructors();
+        if (availableInstructors.size() < 3) {
+            throw new InstructorNotFoundException("Not enough instructors available");
+        }
+
+        for (Instructor instructor : availableInstructors) {
+            if (!classEntity.getInstructorsAssigned().contains(instructor)) {
+                instructor.setClassAssigned(classId);
+                classEntity.getInstructorsAssigned().add(instructor);
+            }
+        }
+
+        if (classEntity.getCoordinatorAssigned() == null) {
+            Coordinator availableCoordinator = coordinatorRepository.findOneCoordinator();
+            if (availableCoordinator != null) {
+                availableCoordinator.setClassAssigned(classId);
+                classEntity.setCoordinatorAssigned(availableCoordinator);
+            }
+        }
+        classRepository.save(classEntity);
+    }
+
+    @Transactional
+    public void populateClassWithStudents(Long classId) {
+        Class classEntity = classRepository.findById(classId)
+                .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
+
+        List<Student> existingStudents = classEntity.getStudentList();
+
+        List<Student> studentsToAdd = studentRepository.findAll();
+        studentsToAdd.removeAll(existingStudents);
+
+        int maxStudentsToAdd = Math.min(30 - existingStudents.size(), studentsToAdd.size());
+
+        if (maxStudentsToAdd <= 0) {
+            throw new MaxStudentsException("No more students to add to the class");
+        }
+        List<Student> studentsToAddToClass = studentsToAdd.subList(0, maxStudentsToAdd);
+
+        classEntity.getStudentList().addAll(studentsToAddToClass);
+        for (Student student : studentsToAddToClass) {
+            if (!classEntity.getStudentList().contains(student)) {
+                student.setClassAssigned(classId);
+            }
+        }
+        classRepository.save(classEntity);
+    }
+    @Transactional
+    public void addSquadsToClassWithStudents(Long classId) {
+        int maxStudentsPerSquad = 5;
+        Class classEntity = classRepository.findById(classId)
+                .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
+
+        List<Student> students = classEntity.getStudentList();
+        Collections.shuffle(students);
+
+        int numOfSquads = (int) Math.ceil((double) students.size() / maxStudentsPerSquad);
+
+        List<Squad> squadsToAddStudents = new ArrayList<>();
+
+        for (int i = 1; i <= numOfSquads; i++) {
+            Squad newSquad = new Squad();
+            newSquad.setClassAssigned(classId);
+            squadRepository.save(newSquad);
+
+            int fromIndex = (i - 1) * maxStudentsPerSquad;
+            int toIndex = Math.min(i * maxStudentsPerSquad, students.size());
+            List<Student> studentsToAdd = students.subList(fromIndex, toIndex);
+
+            newSquad.getStudentList().addAll(studentsToAdd);
+            squadsToAddStudents.add(newSquad);
+        }
+
+        classEntity.getSquadList().addAll(squadsToAddStudents);
+        classRepository.save(classEntity);
+    }
+
 }

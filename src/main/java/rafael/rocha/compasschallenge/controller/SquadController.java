@@ -13,7 +13,6 @@ import rafael.rocha.compasschallenge.entity.Student;
 import rafael.rocha.compasschallenge.exceptions.SquadNotFoundException;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.service.SquadService;
-import rafael.rocha.compasschallenge.service.StudentService;
 
 @RestController
 @RequestMapping("/v1/squads")
