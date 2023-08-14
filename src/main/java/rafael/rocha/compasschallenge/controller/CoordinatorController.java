@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rafael.rocha.compasschallenge.dtos.CoordinatorDTORequest;
+import rafael.rocha.compasschallenge.dtos.coordinator.CoordinatorDTORequest;
 import rafael.rocha.compasschallenge.entity.Coordinator;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.service.CoordinatorService;
@@ -12,7 +12,7 @@ import rafael.rocha.compasschallenge.service.CoordinatorService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/coordinators")
+@RequestMapping("/v1/coordinators")
 public class CoordinatorController {
 
     @Autowired

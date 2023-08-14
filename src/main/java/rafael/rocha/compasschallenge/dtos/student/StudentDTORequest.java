@@ -1,4 +1,4 @@
-package rafael.rocha.compasschallenge.dtos;
+package rafael.rocha.compasschallenge.dtos.student;
 
 import lombok.*;
 import rafael.rocha.compasschallenge.entity.Class;

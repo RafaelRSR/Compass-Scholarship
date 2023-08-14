@@ -5,17 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rafael.rocha.compasschallenge.dtos.SquadDTORequest;
-import rafael.rocha.compasschallenge.dtos.SquadDTOResponse;
-import rafael.rocha.compasschallenge.dtos.StudentDTORequest;
+import rafael.rocha.compasschallenge.dtos.squad.SquadDTORequest;
+import rafael.rocha.compasschallenge.dtos.squad.SquadDTOResponse;
+import rafael.rocha.compasschallenge.dtos.student.StudentDTORequest;
 import rafael.rocha.compasschallenge.entity.Squad;
 import rafael.rocha.compasschallenge.entity.Student;
 import rafael.rocha.compasschallenge.exceptions.SquadNotFoundException;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.service.SquadService;
 import rafael.rocha.compasschallenge.service.StudentService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/v1/squads")

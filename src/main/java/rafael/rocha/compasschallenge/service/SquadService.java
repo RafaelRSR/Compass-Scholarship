@@ -5,13 +5,11 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rafael.rocha.compasschallenge.dtos.SquadDTORequest;
+import rafael.rocha.compasschallenge.dtos.squad.SquadDTORequest;
 import rafael.rocha.compasschallenge.entity.Squad;
 import rafael.rocha.compasschallenge.entity.Student;
 import rafael.rocha.compasschallenge.exceptions.SquadNotFoundException;
 import rafael.rocha.compasschallenge.repository.SquadRepository;
-
-import java.util.List;
 
 @Service
 public class SquadService {

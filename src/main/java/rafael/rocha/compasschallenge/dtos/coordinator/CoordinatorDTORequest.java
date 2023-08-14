@@ -1,4 +1,4 @@
-package rafael.rocha.compasschallenge.dtos;
+package rafael.rocha.compasschallenge.dtos.coordinator;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

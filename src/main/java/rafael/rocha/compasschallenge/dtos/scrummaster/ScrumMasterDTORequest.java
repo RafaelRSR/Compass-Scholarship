@@ -1,4 +1,4 @@
-package rafael.rocha.compasschallenge.dtos;
+package rafael.rocha.compasschallenge.dtos.scrummaster;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InstructorDTORequest {
+public class ScrumMasterDTORequest {
 
     private String firstName;
 

@@ -1,4 +1,4 @@
-package rafael.rocha.compasschallenge.dtos;
+package rafael.rocha.compasschallenge.dtos.classroom;
 
 import jakarta.persistence.*;
 import lombok.*;

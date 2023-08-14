@@ -1,17 +1,14 @@
 package rafael.rocha.compasschallenge.service;
 
 
-import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rafael.rocha.compasschallenge.dtos.StudentDTORequest;
-import rafael.rocha.compasschallenge.dtos.StudentDTOResponse;
+import rafael.rocha.compasschallenge.dtos.student.StudentDTORequest;
+import rafael.rocha.compasschallenge.dtos.student.StudentDTOResponse;
 import rafael.rocha.compasschallenge.entity.Student;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.repository.StudentRepository;
-
-import java.util.List;
 
 
 @Service

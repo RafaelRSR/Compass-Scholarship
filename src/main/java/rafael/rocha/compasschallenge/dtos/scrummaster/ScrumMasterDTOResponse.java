@@ -1,4 +1,4 @@
-package rafael.rocha.compasschallenge.dtos;
+package rafael.rocha.compasschallenge.dtos.scrummaster;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CoordinatorDTOResponse {
+public class ScrumMasterDTOResponse {
 
 
     @Id

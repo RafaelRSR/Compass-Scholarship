@@ -1,4 +1,4 @@
-package rafael.rocha.compasschallenge.dtos;
+package rafael.rocha.compasschallenge.dtos.instructor;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

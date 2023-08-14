@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rafael.rocha.compasschallenge.dtos.ClassDTOResponse;
+import rafael.rocha.compasschallenge.dtos.classroom.ClassDTOResponse;
 import rafael.rocha.compasschallenge.entity.Class;
 import rafael.rocha.compasschallenge.exceptions.ClassroomNotFoundException;
 import rafael.rocha.compasschallenge.service.ClassService;
