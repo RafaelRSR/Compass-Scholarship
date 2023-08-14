@@ -1,6 +1,7 @@
 package rafael.rocha.compasschallenge.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 @Data
@@ -21,6 +22,7 @@ public class ScrumMaster {
     @Column(name = "last_name")
     private String lastName;
 
+    @Email(message = "Email cannot be empty!")
     @Column(name = "email")
     private String email;
 

@@ -29,6 +29,6 @@ public class Squad {
     @Max(5)
     private List<Student> studentList;
 
-    @ManyToOne
-    private Class classAssigned;
+    @Column(name = "class_assigned_id")
+    private Long classAssigned;
 }

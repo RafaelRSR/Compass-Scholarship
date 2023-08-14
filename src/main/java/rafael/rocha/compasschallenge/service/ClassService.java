@@ -35,9 +35,8 @@ public class ClassService {
     @Autowired
     private CoordinatorRepository coordinatorRepository;
 
-    public Class findById(Long id) {
-        return classRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Class not found"));
+    public List<Class> getAllClasses() {
+        return classRepository.findAll();
     }
 
     public void startClass(ClassDTORequest classDTORequest) {
@@ -69,12 +68,13 @@ public class ClassService {
 
     public ClassDTOResponse getClassMembers(Long classId) {
         Class classEntity = classRepository.findById(classId)
-                .orElseThrow(() -> new IllegalArgumentException("Couldn't find class"));
+                .orElseThrow(() -> new IllegalArgumentException("Couldn't find class with id: " + classId));
         return modelMapper.map(classEntity, ClassDTOResponse.class);
     }
 
     public void createClass(ClassDTOResponse classDTORequest) {
         Class classEntity = modelMapper.map(classDTORequest, Class.class);
+        classEntity.setStatus(ClassStatus.WAITING);
         classRepository.save(classEntity);
     }
 
