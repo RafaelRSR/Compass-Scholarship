@@ -1,11 +1,12 @@
 package rafael.rocha.compasschallenge.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rafael.rocha.compasschallenge.dtos.CoordinatorDTORequest;
-import rafael.rocha.compasschallenge.dtos.CoordinatorDTOResponse;
 import rafael.rocha.compasschallenge.entity.Coordinator;
+import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.service.CoordinatorService;
 
 import java.util.List;
@@ -23,8 +24,24 @@ public class CoordinatorController {
         return ResponseEntity.ok(coordinators);
     }
 
+    @GetMapping("/{coordinatorId}")
+    public ResponseEntity<Object> findCoordinatorById(@PathVariable Long coordinatorId) {
+        try {
+            Coordinator coordinator = coordinatorService.findById(coordinatorId);
+            return ResponseEntity.ok(coordinator);
+        } catch (StudentNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Coordinator not found!");
+        }
+    }
+
     @PostMapping
-    public ResponseEntity<Coordinator> createCoordinator(@PathVariable Long coordinatorId, @RequestBody CoordinatorDTORequest coordinatorDTORequest) {
+    public ResponseEntity<String> createCoordinator(@RequestBody CoordinatorDTORequest coordinatorDTORequest) {
+        coordinatorService.createCoordinator(coordinatorDTORequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Created a new coordinator successfully!");
+    }
+
+    @PutMapping("/{coordinatorId}")
+    public ResponseEntity<Coordinator> updateCoordinator(@PathVariable Long coordinatorId, @RequestBody CoordinatorDTORequest coordinatorDTORequest) {
         Coordinator updatedCoordinator = coordinatorService.updateCoordinator(coordinatorId, coordinatorDTORequest);
         return ResponseEntity.ok(updatedCoordinator);
     }

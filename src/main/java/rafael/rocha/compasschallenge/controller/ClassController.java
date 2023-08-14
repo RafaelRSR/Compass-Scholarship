@@ -18,7 +18,7 @@ public class ClassController {
     @Autowired
     private ClassService classService;
 
-    @GetMapping(value = "/all")
+    @GetMapping
     public ResponseEntity<List<Class>> getAllClasses(){
         List<Class> classes = classService.getAllClasses();
         return ResponseEntity.ok(classes);
