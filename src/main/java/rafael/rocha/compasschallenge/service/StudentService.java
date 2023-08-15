@@ -10,6 +10,8 @@ import rafael.rocha.compasschallenge.entity.Student;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.repository.StudentRepository;
 
+import java.util.List;
+
 
 @Service
 public class StudentService {
@@ -19,6 +21,10 @@ public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
+    }
 
 
     public StudentDTOResponse createStudent(StudentDTORequest studentDTORequest) {

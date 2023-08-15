@@ -33,7 +33,7 @@ public class SquadController {
         return ResponseEntity.ok(squadDTOResponse);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<SquadDTOResponse> createSquad(@RequestBody SquadDTORequest squadDTORequest) {
         Squad newSquad = squadService.createSquad(squadDTORequest);
         SquadDTOResponse squadDTOResponse = modelMapper.map(newSquad, SquadDTOResponse.class);

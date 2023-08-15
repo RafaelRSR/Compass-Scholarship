@@ -26,7 +26,7 @@ public class Coordinator {
     private String lastName;
 
     @Email(message = "Email cannot be empty!")
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "class_assigned_id")

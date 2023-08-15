@@ -6,9 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rafael.rocha.compasschallenge.dtos.student.StudentDTORequest;
 import rafael.rocha.compasschallenge.dtos.student.StudentDTOResponse;
+import rafael.rocha.compasschallenge.entity.Coordinator;
 import rafael.rocha.compasschallenge.entity.Student;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.service.StudentService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/students")
@@ -16,6 +19,13 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+
+    @GetMapping
+    public ResponseEntity<List<Student>> getAllCoordinators() {
+        List<Student> students = studentService.getAllStudents();
+        return ResponseEntity.ok(students);
+    }
 
     @GetMapping("/get/{studentId}")
     public ResponseEntity<Object> findById(@PathVariable Long studentId) {
@@ -27,13 +37,13 @@ public class StudentController {
         }
     }
 
-    @PostMapping("/post")
+    @PostMapping("/create")
     public ResponseEntity<StudentDTOResponse> createStudent(@RequestBody StudentDTORequest studentDTORequest) {
         StudentDTOResponse newStudent = studentService.createStudent(studentDTORequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(newStudent);
     }
 
-    @PutMapping("/put/{studentId}")
+    @PutMapping("/update/{studentId}")
     public ResponseEntity<Object> updateStudent(@PathVariable Long studentId, @RequestBody StudentDTORequest studentDTORequest) {
         try {
             Student updatedStudent = studentService.updateStudent(studentId, studentDTORequest);

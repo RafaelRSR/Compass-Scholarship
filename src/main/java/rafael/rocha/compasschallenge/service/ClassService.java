@@ -297,7 +297,7 @@ public class ClassService {
 
         classEntity.getStudentList().addAll(studentsToAddToClass);
         for (Student student : studentsToAddToClass) {
-            if (!classEntity.getStudentList().contains(student)) {
+            if (classEntity.getStudentList().contains(student)) {
                 student.setClassAssigned(classId);
             }
         }
@@ -332,5 +332,4 @@ public class ClassService {
         classEntity.getSquadList().addAll(squadsToAddStudents);
         classRepository.save(classEntity);
     }
-
 }

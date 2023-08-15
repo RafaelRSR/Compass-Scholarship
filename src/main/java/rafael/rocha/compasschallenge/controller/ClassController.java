@@ -46,11 +46,11 @@ public class ClassController {
             classService.startClass(classId);
             return ResponseEntity.ok("Class started successfully.");
         } catch (ClassroomNotFoundException | IllegalStateException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Can't start this class!");
         }
     }
 
-    @PutMapping("/{classId}/finishClass")
+    @PostMapping("/{classId}/finish")
     public ResponseEntity<String> finishClass(@PathVariable Long classId) {
         try {
             classService.finishClass(classId);
@@ -58,7 +58,7 @@ public class ClassController {
         } catch (ClassroomNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Can't finish this class!");
         }
     }
 
