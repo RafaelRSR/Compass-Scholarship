@@ -40,9 +40,6 @@ class ClassServiceTest {
     private StudentRepository studentRepository;
 
     @Mock
-    private SquadRepository squadRepository;
-
-    @Mock
     private CoordinatorRepository coordinatorRepository;
 
     @Mock

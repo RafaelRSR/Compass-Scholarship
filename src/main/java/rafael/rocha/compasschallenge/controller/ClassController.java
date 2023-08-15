@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import rafael.rocha.compasschallenge.dtos.classroom.ClassDTOResponse;
 import rafael.rocha.compasschallenge.dtos.squad.SquadDTORequest;
 import rafael.rocha.compasschallenge.entity.Class;
-import rafael.rocha.compasschallenge.entity.Student;
 import rafael.rocha.compasschallenge.exceptions.ClassroomNotFoundException;
 import rafael.rocha.compasschallenge.exceptions.MaxStudentsException;
 import rafael.rocha.compasschallenge.service.ClassService;
