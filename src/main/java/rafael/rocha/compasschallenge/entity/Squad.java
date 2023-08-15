@@ -1,13 +1,12 @@
 package rafael.rocha.compasschallenge.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -24,7 +23,7 @@ public class Squad {
 
     @OneToMany
     @JoinColumn(name = "student_list")
-    private List<Student> studentList = new ArrayList<>();
+    private List<Student> studentList;
 
     @Column(name = "class_assigned_id")
     private Long classAssigned;

@@ -41,6 +41,10 @@ public class ClassService {
     @Autowired
     private ScrumMasterRepository scrumMasterRepository;
 
+    public Class findById(Long id) {
+        return classRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Class not found"));
+    }
 
     public List<Class> getAllClasses() {
         return classRepository.findAll();
@@ -53,14 +57,13 @@ public class ClassService {
         validateClassSize(classEntity);
         validateClassStaff(classEntity);
         classEntity.setStatus(ClassStatus.STARTED);
-        populateSquadsWithStudents(classEntity.getId());
     }
 
     public void validateClassSize(Class classDTORequest) {
         int currentSize = classDTORequest.getStudentList().size();
 
         if (!(currentSize >= 15 && currentSize < 30)) {
-            throw new IllegalArgumentException("Class size not accepted");
+            throw new AmountStudentsException("Class size not accepted");
         }
     }
 
@@ -151,25 +154,6 @@ public class ClassService {
         classRepository.save(classEntity);
     }
 
-    public void populateSquadsWithStudents(Long classId) {
-        List<Student> students = studentRepository.findAll();
-        Collections.shuffle(students);
-
-        Class classEntity = classRepository.findById(classId)
-                .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
-
-        List<Squad> squads = classEntity.getSquadList();
-
-        for (Squad squad : squads) {
-            List<Student> studentsToAdd = new ArrayList<>();
-            for (int i = 0; i < 5 && i < students.size(); i++) {
-                studentsToAdd.add(students.get(i));
-            }
-
-            squad.getStudentList().addAll(studentsToAdd);
-            squadRepository.save(squad);
-        }
-    }
 
     @Transactional
     public void addCoordinatorToClass(Long classId, Long coordinatorId) {

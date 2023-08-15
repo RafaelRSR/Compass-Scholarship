@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rafael.rocha.compasschallenge.dtos.student.StudentDTORequest;
 import rafael.rocha.compasschallenge.dtos.student.StudentDTOResponse;
-import rafael.rocha.compasschallenge.entity.Coordinator;
 import rafael.rocha.compasschallenge.entity.Student;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.service.StudentService;
@@ -22,7 +21,7 @@ public class StudentController {
 
 
     @GetMapping
-    public ResponseEntity<List<Student>> getAllCoordinators() {
+    public ResponseEntity<List<Student>> getAllStudents() {
         List<Student> students = studentService.getAllStudents();
         return ResponseEntity.ok(students);
     }

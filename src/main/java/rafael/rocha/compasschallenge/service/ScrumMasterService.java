@@ -29,10 +29,10 @@ public class ScrumMasterService {
                 .orElseThrow(() -> new ScrumMasterNotFoundException("Scrum Master not found with id: " + scrumMasterId));
     }
 
-    public ScrumMasterDTOResponse createScrumMaster(ScrumMasterDTORequest scrumMasterDTORequest) {
+    public void createScrumMaster(ScrumMasterDTORequest scrumMasterDTORequest) {
         ScrumMaster scrumMaster = modelMapper.map(scrumMasterDTORequest, ScrumMaster.class);
         ScrumMaster newScrumMaster = scrumMasterRepository.save(scrumMaster);
-        return modelMapper.map(newScrumMaster, ScrumMasterDTOResponse.class);
+        modelMapper.map(newScrumMaster, ScrumMasterDTOResponse.class);
     }
 
     public ScrumMaster updateScrumMaster(Long scrumMasterId, ScrumMasterDTORequest scrumMasterDTORequest) {

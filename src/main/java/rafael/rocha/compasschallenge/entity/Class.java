@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import rafael.rocha.compasschallenge.enums.ClassStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
