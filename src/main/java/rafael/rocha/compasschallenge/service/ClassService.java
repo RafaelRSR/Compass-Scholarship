@@ -113,6 +113,10 @@ public class ClassService {
         Student newStudent = studentRepository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException("Couldn't find student with id:" + studentId));
 
+        if (classEntity.getStatus() != ClassStatus.WAITING) {
+            throw new StatusNotAllowedException("Cannot add student to class. Class status is not WAITING.");
+        }
+
         newStudent.setClassAssigned(classId);
         classEntity.getStudentList().add(newStudent);
         classRepository.save(classEntity);
@@ -266,6 +270,10 @@ public class ClassService {
     public void populateClassWithStudents(Long classId) {
         Class classEntity = classRepository.findById(classId)
                 .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
+
+        if (classEntity.getStatus() != ClassStatus.WAITING) {
+            throw new StatusNotAllowedException("Cannot add student to class. Class status is not WAITING.");
+        }
 
         List<Student> existingStudents = classEntity.getStudentList();
 
