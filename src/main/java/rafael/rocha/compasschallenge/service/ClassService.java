@@ -295,6 +295,7 @@ public class ClassService {
         }
         classRepository.save(classEntity);
     }
+
     @Transactional
     public void addSquadsToClassWithStudents(Long classId) {
         int maxStudentsPerSquad = 5;

@@ -8,6 +8,7 @@ import rafael.rocha.compasschallenge.dtos.instructor.InstructorDTORequest;
 import rafael.rocha.compasschallenge.entity.Instructor;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.service.InstructorService;
+
 import java.util.List;
 
 @RestController

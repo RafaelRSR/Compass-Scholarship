@@ -22,7 +22,7 @@ public class ClassController {
 
 
     @GetMapping
-    public ResponseEntity<List<Class>> getAllClasses(){
+    public ResponseEntity<List<Class>> getAllClasses() {
         List<Class> classes = classService.getAllClasses();
         return ResponseEntity.ok(classes);
     }
@@ -136,6 +136,7 @@ public class ClassController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No more students to add!");
         }
     }
+
     @PostMapping("/{classId}/addSquads")
     public ResponseEntity<String> addSquadsToClassWithStudents(@PathVariable Long classId) {
         classService.addSquadsToClassWithStudents(classId);
