@@ -66,7 +66,7 @@ http://localhost:8080
 
 This command will execute all the test cases in the project and provide a summary of the results.
 
-** Note: If you're using Windows, you can use mvnw.cmd instead of ./mvnw in the command.**
+**Note: If you're using Windows, you can use mvnw.cmd instead of ./mvnw in the command.**
 
 After the tests are completed, you'll see an output indicating the number of tests run, passed, and failed.
 
