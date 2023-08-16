@@ -43,7 +43,7 @@ public class ClassService {
 
     public Class findById(Long id) {
         return classRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Class not found"));
+                .orElseThrow(() -> new ClassroomNotFoundException("Couldn't find class"));
     }
 
     public List<Class> getAllClasses() {
