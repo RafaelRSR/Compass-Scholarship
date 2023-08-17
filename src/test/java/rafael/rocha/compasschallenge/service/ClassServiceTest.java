@@ -13,6 +13,7 @@ import rafael.rocha.compasschallenge.entity.Class;
 import rafael.rocha.compasschallenge.enums.ClassStatus;
 import rafael.rocha.compasschallenge.exceptions.ClassroomNotFoundException;
 import rafael.rocha.compasschallenge.exceptions.SquadNotFoundException;
+import rafael.rocha.compasschallenge.exceptions.StatusNotAllowedException;
 import rafael.rocha.compasschallenge.exceptions.StudentNotFoundException;
 import rafael.rocha.compasschallenge.repository.*;
 
@@ -186,7 +187,8 @@ class ClassServiceTest {
     void addStudentToClass() {
         Class classEntity = new Class();
         classEntity.setId(1L);
-        classEntity.setStudentList(new ArrayList<>()); // Initialize the studentList
+        classEntity.setStudentList(new ArrayList<>());
+        classEntity.setStatus(ClassStatus.WAITING);
 
         Student student = new Student();
         student.setId(2L);
@@ -203,6 +205,27 @@ class ClassServiceTest {
         assertTrue(classEntity.getStudentList().contains(student));
         verify(classRepository, times(1)).save(classEntity);
     }
+
+    @Test
+    void addStudentToClass_InvalidStatus() {
+        Class classEntity = new Class();
+        classEntity.setId(1L);
+        classEntity.setStatus(ClassStatus.STARTED);
+        classEntity.setStudentList(new ArrayList<>());
+
+        when(classRepository.findById(1L)).thenReturn(Optional.of(classEntity));
+
+        doThrow(StatusNotAllowedException.class)
+                .when(studentRepository).findById(2L);
+
+        assertThrows(StatusNotAllowedException.class, () -> {
+            classService.addStudentToClass(1L, 2L);
+        });
+
+        verify(classRepository, times(1)).findById(1L);
+        verify(studentRepository, times(1)).findById(2L);
+    }
+
     @Test
     void addStudentToClassClassroomNotFoundException() {
         when(classRepository.findById(1L)).thenReturn(Optional.empty());
@@ -345,6 +368,7 @@ class ClassServiceTest {
         Class classEntity = new Class();
         classEntity.setId(1L);
         classEntity.setStudentList(new ArrayList<>());
+        classEntity.setStatus(ClassStatus.WAITING);
 
         List<Student> existingStudents = new ArrayList<>();
         for (int i = 1; i <= 15; i++) {
@@ -379,6 +403,7 @@ class ClassServiceTest {
         Class classEntity = new Class();
         classEntity.setId(1L);
         classEntity.setStudentList(new ArrayList<>());
+        classEntity.setStatus(ClassStatus.WAITING);
 
         List<Student> existingStudents = new ArrayList<>();
         for (int i = 1; i <= 15; i++) {
